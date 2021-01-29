@@ -18,6 +18,19 @@ available.
 - Remap these API calls to our own operationId, for better method naming
 - Overlay source code for add-on capabilities and a more capable client
 
+## Dependencies
+
+- Python 3.5+ (CPython 3.6 used for development)
+- Java 1.8+
+- Apache Ant
+
+## How to build
+
+- Update `metaspec.yaml` with all the OpenAPI specs and operations you will need.
+- Run `ant bootstrap` to install Apache Ivy into `$HOME/.ant/lib`.
+- Run `ant resolve` to download swagger-codegen-cli into the `lib` sub-directory.
+- Run `ant build` to build your SDK in the `target` sub-directory.
+
 ## Theory of Operation
 
 - A YAML file specifies which OpenAPI specifications to combine,
@@ -28,7 +41,7 @@ available.
   that we make the URLs to these full rather than relative URIs.
 - swagger-codegen-cli is then used to create a Python SDK using only the APIs
   needed, across multiple ExLibris provided specifications.
-- The src directory is then overlayed on top of the created SDK
+- The `src` sub directory is then copied on top of the created SDK
 
 ## What this is not
 
