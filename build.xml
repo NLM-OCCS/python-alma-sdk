@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="nlm-alma-api" default="generate">
+  <property name="lib.dir" value="${basedir}/lib"/>
+  <property name="target.dir" value="${basedir}/target"/>
+  <property name="src.dir" value="${basedir}/src"/>
+  <property name="swagger.jar" value="C:\Users\davisda4\Tools\swagger\swagger-codegen-cli-3.0.24.jar"/>
+  <property name="ivy.version">2.5.0</property>
+  <property name="ivy.dep.file" value="ivy.xml"/>
+
+  <macrodef name="swagger-generate">
+    <attribute name="failonerror" default="true"/>
+    <attribute name="dir" default="${basedir}"/>
+    <attribute name="todir" default="${target.dir}"/>
+    <attribute name="config"/>
+    <attribute name="spec"/>
+    <sequential>
+      <java dir="@{dir}" failonerror="@{failonerror}" jar="${lib.dir}/swagger-codegen-cli.jar" fork="true">
+          <arg value="generate"/>
+          <arg value="-l"/>
+          <arg value="python"/>
+          <arg value="-c"/>
+          <arg value="@{config}"/>
+          <arg value="-i"/>
+          <arg value="@{spec}"/>
+          <arg value="--resolve-fully"/>
+          <arg value="-o"/>
+          <arg value="@{todir}"/>
+      </java>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="buildspec">
+    <attribute name="failonerror" default="true"/>
+    <attribute name="dir" default="${basedir}"/>
+    <attribute name="metaspec"/>
+    <attribute name="output"/>
+    <sequential>
+
+    </sequential>
+  </macrodef>
+
+  <!-- Bootstrap ivy -->
+  <target name="bootstrap" description="--> Download and install Apache Ivy">
+    <!-- Create directory if not exists -->
+    <mkdir dir="${user.home}/.ant/lib"/>
+
+    <!-- Download it -->
+    <echo message="Downloading Apache Ivy..." />
+    <get dest="${user.home}/.ant/lib/ivy.jar" src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" />
+  </target>
+
+  <!-- Resolve Java libraries needed for build -->
+  <target name="resolve" description="--> Resolve dependencies for swagger-generator">
+    <!-- Create directory if not exists -->
+    <mkdir dir="${lib.dir}" />
+    <!-- configure, resolve, and retrieve deps using apache ivy -->
+    <ivy:retrieve type="jar" pattern="${lib.dir}/[artifact](-[classifier]).[ext]" />
+  </target>
+
+  <target name="buildspec" description="--> Generate a cherry picked OpenAPI specification" >
+    <mkdir dir="${target.dir}" />
+    <exec executable="python" dir="${basedir}" failonerror="true">
+      <arg value="buildspec.py"/>
+      <arg value="metaspec.yaml"/>
+      <arg value="-o"/>
+      <arg value="${target.dir}/spec.json"/>
+    </exec>
+  </target>
+
+  <!-- Generate the SDK -->
+  <target name="generate" description="--> Generates the SDK based on the specification">
+    <mkdir dir="${target.dir}" />
+    <swagger-generate config="${basedir}/api-config.json" spec="${target.dir}/spec.json" />
+  </target>
+
+  <target name="overlay" description="--> Overlays our own configuration and client objects into the SDK">
+    <copy todir="${target.dir}">
+      <fileset dir="${src.dir}">
+        <include name="**/*.py"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="build"
+          depends="resolve, buildspec, generate, overlay"
+          description="--> Takes all of the steps one at a time" />
+
+  <target name="clean" description="--> Removes intermediate artifacts leaving only the main product">
+    <delete dir="${target.dir}" />
+  </target>
+
+</project>
+

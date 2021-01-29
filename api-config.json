@@ -1,0 +1,5 @@
+{
+  "packageName": "alma_api",
+  "modelPackage": "models",
+  "apiPackage": "apis"
+}

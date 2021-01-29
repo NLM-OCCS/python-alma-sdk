@@ -1,0 +1,12 @@
+---
+- url: https://developers.exlibrisgroup.com/wp-content/uploads/alma/openapi/bibs.json
+  operations:
+    get_bibs: 'get/almaws/v1/bibs'
+    get_bib_by_id: 'get/almaws/v1/bibs/{mms_id}'
+    get_authorities: 'get/almaws/v1/bibs/authorities'
+    get_collections: 'get/almaws/v1/bibs/collections'
+- url: https://developers.exlibrisgroup.com/wp-content/uploads/alma/openapi/users.json
+  operations:
+    get_users: 'get/almaws/v1/users'
+    get_user_by_id: 'get/almaws/v1/users/{user_id}'
+    update_user_details: 'get/almaws/v1/users/{user_id}'
