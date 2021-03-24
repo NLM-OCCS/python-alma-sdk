@@ -5,8 +5,47 @@
     get_bib_by_id: 'get/almaws/v1/bibs/{mms_id}'
     get_authorities: 'get/almaws/v1/bibs/authorities'
     get_collections: 'get/almaws/v1/bibs/collections'
+    get_bib_portfolios: 'get/almaws/v1/bibs/{mms_id}/portfolios'
+    get_holdings: 'get/almaws/v1/bibs/{mms_id}/holdings'
+    get_holding_record: 'get/almaws/v1/bibs/{mms_id}/holdings/{holding_id}'
+    get_holding_items: 'get/almaws/v1/bibs/{mms_id}/holdings/{holding_id}/items'
+    update_bib: 'put/almaws/v1/bibs/{mms_id}'
+- url: https://developers.exlibrisgroup.com/wp-content/uploads/alma/openapi/conf.json
+  operations:
+    get_jobs: 'get/almaws/v1/conf/jobs'
+    get_job_details: 'get/almaws/v1/conf/jobs/{job_id}'
+    get_job_instances: 'get/almaws/v1/conf/jobs/{job_id}/instances'
+    get_job_instance_details: 'get/almaws/v1/conf/jobs/{job_id}/instances/{instance_id}'
+    get_libraries: 'get/almaws/v1/conf/libraries'
+    get_locations: 'get/almaws/v1/conf/libraries/{libraryCode}/locations'
+    submit_job: 'post/almaws/v1/conf/jobs/{job_id}'
+    get_sets: 'get/almaws/v1/conf/sets'
+    create_set: 'post/almaws/v1/conf/sets'
+    delete_set: 'delete/almaws/v1/conf/sets/{set_id}'
+    get_set: 'get/almaws/v1/conf/sets/{set_id}'
+    manage_set_members: 'post/almaws/v1/conf/sets/{set_id}'
+    get_set_members: 'get/almaws/v1/conf/sets/{set_id}/members'
+- url: https://developers.exlibrisgroup.com/wp-content/uploads/alma/openapi/electronic.json
+  operations:
+    get_collections: 'get/almaws/v1/electronic/e-collections'
+    get_collection: 'get/almaws/v1/electronic/e-collections/{collection_id}'
+- url: https://developers.exlibrisgroup.com/wp-content/uploads/primo/openapi/primoSearch.json
+  tags: 'Primo'
+  operations:
+    search: 'get/primo/v1/search'
 - url: https://developers.exlibrisgroup.com/wp-content/uploads/alma/openapi/users.json
   operations:
-    get_users: 'get/almaws/v1/users'
-    get_user_by_id: 'get/almaws/v1/users/{user_id}'
-    update_user_details: 'get/almaws/v1/users/{user_id}'
+    list_users: 'get/almaws/v1/users'
+    get_user_details: 'get/almaws/v1/users/{user_id}'
+    update_user_details: 'put/almaws/v1/users/{user_id}'
+    create_user: 'post/almaws/v1/users'
+    delete_user: 'delete/almaws/v1/users/{user_id}'
+- url: https://developers.exlibrisgroup.com/wp-content/uploads/alma/openapi/acq.json
+  operations:
+    get_licenses: 'get/almaws/v1/acq/licenses/'
+    get_license: 'get/almaws/v1/acq/licenses/{license_code}'
+    get_license_amendments: 'get/almaws/v1/acq/licenses/{license_code}/amendments'
+- url: https://developers.exlibrisgroup.com/wp-content/uploads/alma/openapi/analytics.json
+  operations:
+    get_analytics_report: 'get/almaws/v1/analytics/reports'
+    get_analytics_path: 'get/almaws/v1/analytics/paths/{path}'

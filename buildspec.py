@@ -17,7 +17,10 @@ BOILERPLATE = {
     "info": {
         "version": "1.0",
         "title": "Ex Libris APIs",
-        "description": "For more information on how to use these APIs, including how to create an API key required for authentication, see [Alma REST APIs](https://developers.exlibrisgroup.com/alma/apis).",
+        "description":
+            ("For more information on how to use these APIs, including how to create an"
+             "API key required for authentication, see "
+             "[Alma REST APIs](https://developers.exlibrisgroup.com/alma/apis)."),
         "termsOfService": "https://developers.exlibrisgroup.com/about/terms"
     },
     "externalDocs": {
@@ -38,14 +41,21 @@ BOILERPLATE = {
         "securitySchemes": {
             "ApiKeyAuth": {
                 "type": "apiKey",
-                "description": "API key used to authorize requests. Learn about how to create API keys at [Alma REST APIs](https://developers.exlibrisgroup.com/alma/apis/#defining)",
+                "description": (
+                    "API key used to authorize requests. Learn about how to create"
+                    "API keys at "
+                    "[Alma REST APIs](https://developers.exlibrisgroup.com/alma/apis/#defining)"
+                ),
                 "in": "query",
                 "name": "apikey"
             }
         },
         "headers": {
             "remaining": {
-                "description": "The number of remaining calls according to the [Governance Threshold](https://developers.exlibrisgroup.com/alma/apis/#threshold)",
+                "description": (
+                    "The number of remaining calls according to the "
+                    "[Governance Threshold](https://developers.exlibrisgroup.com/alma/apis/#threshold)"
+                ),
                 "schema": {
                     "type": "integer"
                 }
@@ -88,6 +98,9 @@ def build_spec(path, output=None):
 
     for to_spec in spec_of_specs:
         url = to_spec['url']
+        change_tags = to_spec.get('tags')
+        if change_tags and not isinstance(change_tags, list):
+            change_tags = [change_tags]
         operations = to_spec['operations']
         print(f'Processing {url} ...', file=sys.stderr)
         r = requests.get(url)
@@ -102,6 +115,8 @@ def build_spec(path, output=None):
                     print(f' {method} {path} mapped to {new_id}', file=sys.stderr)
                     del inverted_ops[op['operationId']]
                     new_op = copy.deepcopy(op)
+                    if change_tags:
+                        new_op['tags'] = change_tags
                     new_op['operationId'] = new_id
                     update_refs(url, new_op)
                     paths[path][method] = new_op
